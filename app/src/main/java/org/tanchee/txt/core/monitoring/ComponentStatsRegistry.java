@@ -1,4 +1,4 @@
-package org.tanchee.txt.core.stats;
+package org.tanchee.txt.core.monitoring;
 
 import org.tanchee.txt.core.component.ComponentId;
 

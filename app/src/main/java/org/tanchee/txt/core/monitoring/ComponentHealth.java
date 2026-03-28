@@ -1,4 +1,4 @@
-package org.tanchee.txt.core.health;
+package org.tanchee.txt.core.monitoring;
 
 import java.time.Instant;
 import java.util.Map;

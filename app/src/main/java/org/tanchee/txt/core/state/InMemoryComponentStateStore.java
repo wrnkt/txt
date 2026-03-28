@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.tanchee.txt.core.component.ComponentId;
-import org.tanchee.txt.core.health.ComponentHealth;
-import org.tanchee.txt.core.health.HealthStatus;
+import org.tanchee.txt.core.monitoring.ComponentHealth;
+import org.tanchee.txt.core.monitoring.HealthStatus;
 
 public class InMemoryComponentStateStore implements ComponentStateStore {
 

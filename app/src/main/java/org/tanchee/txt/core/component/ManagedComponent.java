@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-import org.tanchee.txt.core.health.ComponentHealth;
-import org.tanchee.txt.core.health.HealthStatus;
+import org.tanchee.txt.core.monitoring.ComponentHealth;
+import org.tanchee.txt.core.monitoring.HealthStatus;
 import org.tanchee.txt.core.state.ComponentState;
-import org.tanchee.txt.core.stats.ComponentStats;
+import org.tanchee.txt.core.monitoring.ComponentStats;
 
 public abstract class ManagedComponent implements Component {
     private final ComponentId id;
@@ -38,17 +38,16 @@ public abstract class ManagedComponent implements Component {
     @Override
     public CompletionStage<Void> start(ComponentContext context) {
         this.context = context;
-        this.stats = context.stats().get(id);
+        this.stats = context.stats().get(id());
 
-        context.state().setState(id, ComponentState.STARTING);
+        setState(ComponentState.STARTING);
 
         try {
             doStart();
 
-            context.state().setState(id, ComponentState.RUNNING);
+            setState(ComponentState.RUNNING);
 
-            context.state().setHealth(
-                id, 
+            setHealth(
                 new ComponentHealth(
                     HealthStatus.HEALTHY,
                     "Running",
@@ -59,10 +58,9 @@ public abstract class ManagedComponent implements Component {
             return CompletableFuture.completedFuture(null);
 
         } catch (Exception e) {
-            context.state().setState(id, ComponentState.FAILED);
+            setState(ComponentState.FAILED);
 
-            context.state().setHealth(
-                id,
+            setHealth(
                 new ComponentHealth(
                     HealthStatus.UNHEALTHY,
                     e.getMessage(),
@@ -78,22 +76,30 @@ public abstract class ManagedComponent implements Component {
 
     @Override
     public CompletionStage<Void> stop() {
-        context.state().setState(id, ComponentState.STOPPING);
+        setState(ComponentState.STOPPING);
         return CompletableFuture.runAsync(() -> {
             doStop();
-            context.state().setState(id, ComponentState.STOPPED);
+            setState(ComponentState.STOPPED);
         });
     }
 
     protected abstract void doStop();
 
+    private void setState(ComponentState state) {
+        context.state().setState(id(), state);
+    }
+
+    private void setHealth(ComponentHealth health) {
+        context.state().setHealth(id(), health);
+    }
+
     @Override
     public ComponentState state() {
-        return context.state().getState(id);
+        return context.state().getState(id());
     }
 
     @Override
     public ComponentHealth health() {
-        return context.state().getHealth(id);
+        return context.state().getHealth(id());
     }
 }

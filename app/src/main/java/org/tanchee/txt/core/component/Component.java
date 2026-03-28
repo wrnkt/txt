@@ -2,7 +2,7 @@ package org.tanchee.txt.core.component;
 
 import java.util.concurrent.CompletionStage;
 
-import org.tanchee.txt.core.health.ComponentHealth;
+import org.tanchee.txt.core.monitoring.ComponentHealth;
 import org.tanchee.txt.core.state.ComponentState;
 
 public interface Component {

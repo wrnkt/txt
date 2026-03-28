@@ -1,4 +1,4 @@
-package org.tanchee.txt.core.stats;
+package org.tanchee.txt.core.monitoring;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.LongAdder;

@@ -1,4 +1,4 @@
-package org.tanchee.txt.core.health;
+package org.tanchee.txt.core.monitoring;
 
 public enum HealthStatus {
     HEALTHY,

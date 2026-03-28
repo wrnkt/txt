@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.tanchee.txt.core.component.ComponentId;
-import org.tanchee.txt.core.health.ComponentHealth;
+import org.tanchee.txt.core.monitoring.ComponentHealth;
 
 public interface ComponentStateStore {
     ComponentState getState(ComponentId id);
