@@ -1,0 +1,6 @@
+package org.tanchee.dam.util.similarity;
+
+public interface CharSequenceDistance<R> extends SimilarityScore<CharSequence, R> {
+    @Override
+    R apply(CharSequence left, CharSequence right);
+}

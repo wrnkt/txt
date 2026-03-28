@@ -1,0 +1,8 @@
+[
+    {
+        "className": "org.tanchee.dam.source.reddit.SubRedditDataCollector",
+        "subreddit": "LifeProTips",
+        "requestType": "TOP",
+        "timeframe": "ALL"
+    }
+]
