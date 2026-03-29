@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/gradle,java,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=gradle,java,maven
 
+### Other ###
+kls_database.db
+
 ### Java ###
 # Compiled class file
 *.class
