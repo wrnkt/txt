@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.commons.lang3)
     implementation(libs.jackson.databind)
+    implementation(libs.okhttp)
 
     implementation(libs.spring.boot.starter.log4j2)
 
