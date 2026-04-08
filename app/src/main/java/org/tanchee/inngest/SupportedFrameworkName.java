@@ -2,7 +2,7 @@ package org.tanchee.inngest;
 
 public enum SupportedFrameworkName {
     SpringBoot("springboot"),
-    Ktor("ktor");
+    JAVALIN("javalin");
 
     private final String value;
 
