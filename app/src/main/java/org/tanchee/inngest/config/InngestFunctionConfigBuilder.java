@@ -50,6 +50,10 @@ public class InngestFunctionConfigBuilder {
         return this;
     }
 
+    public String name() {
+        return this.name;
+    }
+
     /**
      * Define a function trigger using a given InngestFunctionTrigger instance.
      *
