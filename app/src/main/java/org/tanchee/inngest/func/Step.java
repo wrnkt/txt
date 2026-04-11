@@ -1,8 +1,10 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 import java.time.Duration;
 import java.util.function.Supplier;
 
+import org.tanchee.inngest.State;
+import org.tanchee.inngest.Inngest;
 import org.tanchee.inngest.State.StateNotFound;
 
 public class Step {

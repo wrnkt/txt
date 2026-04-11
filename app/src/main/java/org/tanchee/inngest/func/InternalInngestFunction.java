@@ -1,4 +1,4 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

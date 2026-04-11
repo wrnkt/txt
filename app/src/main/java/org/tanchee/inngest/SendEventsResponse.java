@@ -1,7 +1,6 @@
 package org.tanchee.inngest;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Arrays;
 
 public final class SendEventsResponse {
 
@@ -18,9 +17,10 @@ public final class SendEventsResponse {
     @Override
     public boolean equals(Object other) {
         if (other == this) return true;
-        if (other instanceof SendEventsResponse that)
-            return Objects.equals(ids, that.ids);
-        return false;
+        if (other.getClass() != this.getClass()) return false;
+
+        SendEventsResponse otherRes = (SendEventsResponse) other;
+        return Arrays.equals(this.ids, otherRes.ids);
     }
 
     @Override

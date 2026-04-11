@@ -1,4 +1,4 @@
-package com.inngest;
+package org.tanchee.inngest.func;
 
 import java.time.Duration;
 import java.util.HashMap;

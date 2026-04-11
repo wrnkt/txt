@@ -1,4 +1,4 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

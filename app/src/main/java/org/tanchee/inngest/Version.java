@@ -7,6 +7,6 @@ public final class Version {
     private Version() {}
 
     public static String getVersion() {
-        return VERSION != null ? VERSION : VERSION_NOT_FOUND;
+        return (VERSION != null) ? VERSION : VERSION_NOT_FOUND;
     }
 }

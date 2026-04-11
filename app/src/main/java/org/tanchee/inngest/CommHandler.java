@@ -12,8 +12,8 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.inngest.signingkey.SigningKeyHeaders.getAuthorizationHeader;
-import static com.inngest.signingkey.SigningKeyHeaders.hashedSigningKey;
+import static org.tanchee.inngest.signingkey.BearerToken.getAuthorizationHeader;
+import static org.tanchee.inngest.signingkey.BearerToken.hashedSigningKey;
 
 public class CommHandler {
 

@@ -1,6 +1,6 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
-public class StepInvalidStateTypeException extends RuntimeException {
+public class StepInvalidStateTypeException extends Throwable {
     private static final String MSG = "Step execution interrupted";
     private final String id;
     private final String hashedId;

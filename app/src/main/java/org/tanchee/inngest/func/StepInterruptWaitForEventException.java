@@ -1,4 +1,4 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 public class StepInterruptWaitForEventException extends StepInterruptException {
     private final String waitEvent;

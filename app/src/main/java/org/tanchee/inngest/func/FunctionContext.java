@@ -1,6 +1,8 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 import java.util.List;
+
+import org.tanchee.inngest.Event;
 
 public class FunctionContext {
     private Event event;

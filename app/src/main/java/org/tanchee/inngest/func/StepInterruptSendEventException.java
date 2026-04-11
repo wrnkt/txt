@@ -1,4 +1,4 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 public class StepInterruptSendEventException extends StepInterruptException {
     private final String[] eventIds;

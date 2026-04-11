@@ -1,4 +1,4 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
 public enum ResultStatusCode {
     StepComplete(206, "Step complete"),

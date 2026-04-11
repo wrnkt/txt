@@ -1,6 +1,6 @@
-package org.tanchee.inngest;
+package org.tanchee.inngest.func;
 
-public class StepInterruptException extends RuntimeException {
+public class StepInterruptException extends Throwable {
     private final String id;
     private final String hashedId;
     private final Object data;
