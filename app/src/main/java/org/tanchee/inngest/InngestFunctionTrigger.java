@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class InngestFunctionTrigger {
+
     private final String event;
+
     @JsonProperty("expression")
     private final String ifExpression;
+
     private final String cron;
 
     protected InngestFunctionTrigger(
