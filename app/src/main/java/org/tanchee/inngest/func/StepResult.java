@@ -50,4 +50,26 @@ public class StepResult extends StepOp {
         return error;
     }
 
+    public abstract static class StepResultBuilder<
+        C extends StepResult,
+        B extends StepResultBuilder<C, B>>
+        extends StepOpBuilder<C, B> {
+
+        public B populateFrom(StepInterruptException e) {
+            if (e == null) return self();
+            return self()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .data(e.getData());
+        }
+
+        public B populateFrom(StepInterruptSendEventException e) {
+            if (e == null) return self();
+            return self()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .data(new SendEventPayload(e.getEventIds()));
+        }
+    }
+
 }
