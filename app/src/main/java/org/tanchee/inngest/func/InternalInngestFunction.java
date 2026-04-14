@@ -1,10 +1,15 @@
 package org.tanchee.inngest.func;
 
+import static org.tanchee.common.Functional.mapOf;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.tanchee.inngest.Inngest;
+import org.tanchee.inngest.SendEventPayload;
+import org.tanchee.inngest.State;
 import org.tanchee.inngest.config.InngestFunctionConfigBuilder;
 import org.tanchee.inngest.config.InternalFunctionConfig;
 
@@ -12,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-class InternalInngestFunction implements Function {
+public class InternalInngestFunction implements Function {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final InngestFunctionConfigBuilder configBuilder;
@@ -35,80 +40,103 @@ class InternalInngestFunction implements Function {
 
         try {
             Object data = handler.apply(ctx, step);
-            return new StepResult("", "", OpCode.StepRun, ResultStatusCode.FunctionComplete, data);
-
+            return StepResult.builder()
+                .data(data)
+                .id("")
+                .name("")
+                .opCode(OpCode.StepRun)
+                .statusCode(ResultStatusCode.FunctionComplete)
+                .build();
         } catch (StepInterruptSendEventException e) {
-            return new StepResult(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.Step,
-                    ResultStatusCode.StepComplete,
-                    new SendEventPayload(e.getEventIds()));
-
+            return StepResult.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.Step)
+                .statusCode(ResultStatusCode.StepComplete)
+                .error(null)
+                .data(new SendEventPayload(e.getEventIds()))
+                .build();
         } catch (StepInterruptWaitForEventException e) {
-            Map<String, String> opts = new LinkedHashMap<>();
-            opts.put("event", e.getWaitEvent());
-            opts.put("timeout", e.getTimeout());
-            if (e.getIfExpression() != null) {
-                opts.put("if", e.getIfExpression());
-            }
-            return new StepOptions(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.WaitForEvent,
-                    ResultStatusCode.StepComplete,
-                    opts);
-
+            return StepOptions.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.WaitForEvent)
+                .statusCode(ResultStatusCode.StepComplete)
+                .opts(mapOf(opts -> {
+                    opts.put("event", e.getWaitEvent());
+                    opts.put("timeout", e.getTimeout());
+                    if (e.getIfExpression() != null) {
+                        opts.put("if", e.getIfExpression());
+                    }
+                }))
+                .build();
         } catch (StepInterruptSleepException e) {
-            Map<String, String> opts = new HashMap<>();
-            // WARN: hack, not sure if this will work. original below
-            // opts.put("duration", e.getData());
-            opts.put("duration", e.getData().toString());
-            return new StepOptions(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.Sleep,
-                    ResultStatusCode.StepComplete,
-                    opts);
+            return StepOptions.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.Sleep)
+                .statusCode(ResultStatusCode.StepComplete)
+                .opts(mapOf(opts -> {
+                    // WARN: hack, not sure if this will work. original below
+                    // opts.put("duration", e.getData());
+                    opts.put("duration", e.getData().toString());
+                }))
+                .build();
 
         } catch (StepInterruptInvokeException e) {
             String functionId = String.format("%s-%s", e.getAppId(), e.getFnId());
-            Map<String, Object> opts = new LinkedHashMap<>();
-            opts.put("function_id", functionId);
-            opts.put("payload", Map.of("data", e.getData()));
-            if (e.getTimeout() != null) {
-                opts.put("timeout", e.getTimeout());
-            }
-            return new StepOptionsInvoke(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.InvokeFunction,
-                    ResultStatusCode.StepComplete,
-                    opts);
+            return StepOptions.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.InvokeFunction)
+                .statusCode(ResultStatusCode.StepComplete)
+                .opts(mapOf(opts -> {
+                    opts.put("function_id", functionId);
 
+                    Map<String, Object> payload = new HashMap<>();
+                    payload.put("data", e.getData());
+                    opts.put("payload", payload);
+
+                    if (e.getTimeout() != null) {
+                        opts.put("timeout", e.getTimeout());
+                    }
+                }))
+                .build();
         } catch (StepInterruptErrorException e) {
-            return new StepResult(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.StepError,
-                    ResultStatusCode.StepError,
-                    null,
-                    e);
-
+            if (e instanceof StepInterruptErrorException siee) {
+                return StepResult.builder()
+                    .id(e.getHashedId())
+                    .name(e.getId())
+                    .opCode(OpCode.StepError)
+                    .statusCode(ResultStatusCode.StepError)
+                    .error(siee.getError())
+                    .build();
+            } else {
+                // WARN: NOT GOOD, this is a placeholder.
+                //       the entire tree should probably be done
+                //       with one catch and these instanceof checks.
+                throw new RuntimeException(e);
+            }
         } catch (StepInterruptException e) {
-            return new StepResult(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.StepRun,
-                    ResultStatusCode.StepComplete,
-                    serializeStepData(e.getData()));
-
+            // NOTE - Currently this error could be caught in the user's own function
+            // that wraps a
+            // step.run() - how can we prevent that or warn?eturn new StepResult(
+            return StepResult.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.StepRun)
+                .statusCode(ResultStatusCode.StepComplete)
+                .data(serializeStepData(e.getData()))
+                .build();
         } catch (StepInvalidStateTypeException e) {
-            return new StepResult(
-                    e.getHashedId(),
-                    e.getId(),
-                    OpCode.StepStateFailed,
-                    ResultStatusCode.RetriableError);
+            // TODO - handle with the proper OpCode
+            return StepResult.builder()
+                .id(e.getHashedId())
+                .name(e.getId())
+                .opCode(OpCode.StepStateFailed)
+                .statusCode(ResultStatusCode.RetriableError)
+                .data(null)
+                .build();
         }
     }
 
