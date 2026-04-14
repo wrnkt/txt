@@ -1,4 +1,5 @@
 # Java Port Progress
+
 [x] Version.kt
 [x] SupportedFrameworkName.kt
 [x] StepError.kt
@@ -13,10 +14,18 @@
     [x] StepInterruptWaitForEventException
     [x] StepInterruptErrorException
     [] Step
-    [] MemoizedRecord (Map<String, Any>)
-    [] MemoizedState (Map<String, MemoizedRecord>)
+    [x] StepOp
+    [x] StepResult
+    [x] StepOptions
+    [x] StepOptionsInvoke
+    [x] StepConfig
+    [x] FunctionContext
+    [x] InternalFunctionConfig
+    [x] MemoizedRecord (Map<String, Any>)
+    [x] MemoizedState (Map<String, MemoizedRecord>)
+    [x] ResultStatusCode
 [] State.kt
-[] ServeConfig.kt
+[x] ServeConfig.kt
 [] RetryDecision.kt
 [] RetryAfterError.kt
 [] NonRetriableError.kt
