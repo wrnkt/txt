@@ -1,5 +1,8 @@
 package org.tanchee.inngest.func;
 
+import lombok.experimental.SuperBuilder;
+
+@SuperBuilder
 public abstract class StepOp {
     protected String id = "";
     protected String name = "";
@@ -26,5 +29,17 @@ public abstract class StepOp {
     }
     public ResultStatusCode statusCode() {
         return statusCode;
+    }
+
+    public abstract static class StepOpBuilder<
+        C extends StepOp,
+        B extends StepOpBuilder<C, B>> {
+
+        public B populateFrom(StepInterruptException e) {
+            if (e == null) return self();
+            return self()
+                .id(e.getHashedId())
+                .name(e.getId());
+        }
     }
 }

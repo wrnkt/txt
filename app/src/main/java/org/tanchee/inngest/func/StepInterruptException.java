@@ -1,8 +1,13 @@
 package org.tanchee.inngest.func;
 
-public class StepInterruptException extends Throwable {
+import lombok.Builder;
+
+@Builder
+public class StepInterruptException extends RuntimeException {
     private final String id;
     private final String hashedId;
+
+    //NOTE: originally Any? use Optional?
     private final Object data;
 
     public StepInterruptException(String id, String hashedId, Object data) {

@@ -1,6 +1,7 @@
 package org.tanchee.inngest.func;
 
-public class StepInvalidStateTypeException extends Throwable {
+// NOTE: this is originally Kotlin Throwable
+public class StepInvalidStateTypeException extends RuntimeException {
     private static final String MSG = "Step execution interrupted";
     private final String id;
     private final String hashedId;

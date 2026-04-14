@@ -11,4 +11,8 @@ public class StepInterruptErrorException extends StepInterruptException {
         super(id, hashedId, null);
         this.error = error;
     }
+
+    public Exception getError() {
+        return error;
+    }
 }

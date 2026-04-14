@@ -13,5 +13,4 @@ public class StepOptionsInvoke extends StepOp {
     public Map<String, Object> getOpts() {
         return opts;
     }
-
 }

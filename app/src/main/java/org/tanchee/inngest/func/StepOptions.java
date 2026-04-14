@@ -3,15 +3,18 @@ package org.tanchee.inngest.func;
 import java.util.Map;
 import java.util.Objects;
 
-public class StepOptions extends StepOp {
-    private final Map<String, String> opts;
+import lombok.experimental.SuperBuilder;
 
-    public StepOptions(String id, String name, OpCode opCode, ResultStatusCode statusCode, Map<String, String> opts) {
+@SuperBuilder
+public class StepOptions extends StepOp {
+    private final Map<String, Object> opts;
+
+    public StepOptions(String id, String name, OpCode opCode, ResultStatusCode statusCode, Map<String, Object> opts) {
         super(id, name, opCode, statusCode);
         this.opts = opts;
     }
 
-    public Map<String, String> getOpts() {
+    public Map<String, Object> getOpts() {
         return opts;
     }
 

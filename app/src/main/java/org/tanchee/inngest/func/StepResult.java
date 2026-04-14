@@ -1,8 +1,14 @@
 package org.tanchee.inngest.func;
 
+import org.tanchee.inngest.SendEventPayload;
+
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+
+@SuperBuilder
 public class StepResult extends StepOp {
-    private Object data = null;
-    private Exception error = null;
+    private Object data;
+    private Exception error;
 
     public StepResult(String id, String name, OpCode opCode, ResultStatusCode statusCode) {
         super(id, name, opCode, statusCode);
